@@ -331,6 +331,12 @@ docker compose up --build
 # В другом терминале — тестирование
 ./run-tests.sh
 
+# Полное тестирование
+./full_test.sh
+
+# Финальная проверка
+./final_check.sh
+
 ```
 
 
@@ -340,14 +346,25 @@ docker compose up --build
 # Проверка Go чекера
 curl http://localhost:8081/health
 
-# Получение токена
-TOKEN=$(curl -s -X POST http://localhost:8080/login \
+# 1. Регистрация и сохранение токена
+REGISTER_RESPONSE=$(curl -s -X POST http://localhost:8080/register \
   -H "Content-Type: application/json" \
-  -d '{"email":"user@example.com","password":"123456"}' \
-  | grep -o '"token":"[^"]*"' | cut -d'"' -f4)
+  -d '{"email":"final_user@example.com","password":"123456","fullName":"Final User"}')
 
-# Проверка списка заданий
-curl -H "Authorization: Bearer $TOKEN" http://localhost:8080/trainings
+TOKEN=$(echo $REGISTER_RESPONSE | grep -o '"token":"[^"]*"' | cut -d'"' -f4)
+echo "Ваш токен: $TOKEN"
+
+# Проверка списка заданий, используем сохранённый токен
+curl -s -H "Authorization: Bearer $TOKEN" http://localhost:8080/trainings | jq '.[] | {id, title}'
+
+# Отправить ответ
+curl -s -X POST http://localhost:8080/trainings/1/attempt \
+  -H "Authorization: Bearer $TOKEN" \
+  -H "Content-Type: application/json" \
+  -d '{"answer":[0,1,2]}' | jq .
+
+  # Проверить прогресс
+curl -s -H "Authorization: Bearer $TOKEN" http://localhost:8080/profile/progress | jq .
 
 # Полное тестирование
 ./full_test.sh
@@ -361,15 +378,15 @@ curl -H "Authorization: Bearer $TOKEN" http://localhost:8080/trainings
 #### Очистка
 
 ```bash
-
-# Остановка контейнеров
-docker compose down
-
-# Полное удаление контейнеров и данных
+# Полная остановка и удаление
 docker compose down -v
+docker system prune -a -f
 
-# Очистка системы Docker
-docker system prune -a
+# Удалить все образы проекта
+docker rmi $(docker images | grep analytics-trainer | awk '{print $3}') 2>/dev/null
+
+# Пересобрать с нуля
+docker compose up --build
 
 ```
 
