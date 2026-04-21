@@ -323,19 +323,23 @@ git clone https://github.com/AbyanovDamir/analytics-trainer.git
 cd analytics-trainer
 
 # Сборка Java бэкенда
-./build.sh
+sudo chmod +x build.sh
+sudo ./build.sh
 
 # Запуск контейнеров
 docker compose up --build
 
 # В другом терминале — тестирование
-./run-tests.sh
+sudo chmod +x run-tests.sh
+sudo ./run-tests.sh
 
 # Полное тестирование
-./full_test.sh
+sudo chmod +x full_test.sh
+sudo ./full_test.sh
 
 # Финальная проверка
-./final_check.sh
+sudo chmod +x final_check.sh
+sudo ./final_check.sh
 
 ```
 
