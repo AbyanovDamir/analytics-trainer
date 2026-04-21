@@ -353,7 +353,7 @@ curl http://localhost:8081/health
 # 1. Регистрация и сохранение токена
 REGISTER_RESPONSE=$(curl -s -X POST http://localhost:8080/register \
   -H "Content-Type: application/json" \
-  -d '{"email":"final_user@example.com","password":"123456","fullName":"Final User"}')
+  -d '{"email":"final_user2@example.com","password":"123456","fullName":"Final User2"}')
 
 TOKEN=$(echo $REGISTER_RESPONSE | grep -o '"token":"[^"]*"' | cut -d'"' -f4)
 echo "Ваш токен: $TOKEN"
