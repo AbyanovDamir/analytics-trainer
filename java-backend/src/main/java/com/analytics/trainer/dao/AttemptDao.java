@@ -5,6 +5,7 @@ import com.analytics.trainer.model.Attempt;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.JsonNode;
 import java.sql.*;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -34,7 +35,7 @@ public class AttemptDao {
     
     public List<Attempt> getUserAttempts(int userId) throws SQLException {
         List<Attempt> attempts = new ArrayList<>();
-        String sql = "SELECT id, user_id, task_id, answer, score FROM attempts WHERE user_id = ? ORDER BY completed_at DESC";
+        String sql = "SELECT id, user_id, task_id, answer, score, completed_at FROM attempts WHERE user_id = ? ORDER BY completed_at DESC";
         try (Connection conn = dbConfig.getConnection();
              PreparedStatement stmt = conn.prepareStatement(sql)) {
             stmt.setInt(1, userId);
@@ -45,7 +46,8 @@ public class AttemptDao {
                     rs.getInt("user_id"),
                     rs.getInt("task_id"),
                     mapper.readTree(rs.getString("answer")),
-                    rs.getInt("score")
+                    rs.getInt("score"),
+                    rs.getTimestamp("completed_at").toLocalDateTime()
                 ));
             }
         } catch (Exception e) {
