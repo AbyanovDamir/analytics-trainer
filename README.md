@@ -41,7 +41,20 @@
 | Сборка | Maven | 3.8+ |
 
 ---
+## Архитектура проекта
 
+```
+┌─────────────────────────────────────────────────┐
+│                                                 │
+│  Client ──► Java Backend (:8080)               │
+│                  │                              │
+│                  ├──► PostgreSQL (:5432)       │
+│                  │                              │
+│                  └──► Go Checker (:8081)       │
+│                                                 │
+└─────────────────────────────────────────────────┘
+
+```
 ## Структура проекта
 
 ```
@@ -350,7 +363,7 @@ sudo ./final_check.sh
 # Проверка Go чекера
 curl http://localhost:8081/health
 
-# 1. Регистрация и сохранение токена
+# Регистрация и сохранение токена
 REGISTER_RESPONSE=$(curl -s -X POST http://localhost:8080/register \
   -H "Content-Type: application/json" \
   -d '{"email":"final_user2@example.com","password":"123456","fullName":"Final User2"}')
@@ -369,12 +382,6 @@ curl -s -X POST http://localhost:8080/trainings/1/attempt \
 
   # Проверить прогресс
 curl -s -H "Authorization: Bearer $TOKEN" http://localhost:8080/profile/progress | jq .
-
-# Полное тестирование
-./full_test.sh
-
-# Финальная проверка
-./final_check.sh
 
 ```
 
