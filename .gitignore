@@ -1,0 +1,24 @@
+# Java
+java-backend/target/
+*.class
+*.jar
+
+# Go
+checker/checker
+checker/*.exe
+
+# IDE
+.idea/
+*.iml
+.vscode/
+.settings/
+
+# Logs
+*.log
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Docker
+*.pid
