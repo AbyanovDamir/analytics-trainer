@@ -400,6 +400,20 @@ docker rmi $(docker images | grep analytics-trainer | awk '{print $3}') 2>/dev/n
 docker compose up --build
 
 ```
+#### Ссылки на материалы
+
+```
+🐙 GitHub: 
+https://github.com/AbyanovDamir/analytics-trainer
+
+📄 Текстовый отчёт (Google Docs): 
+https://docs.google.com/document/d/15XSb6DdtCc15DN3Uycr7iUViNvMOZGuhGAATHQ9yixw/edit?tab=t.0#heading=h.d2fyfe6sh6ga
+
+📊 Таблица метрик (Google Sheets):
+https://docs.google.com/spreadsheets/d/1bVHSd3kZ0jCI0lvcvpIOWEu2rW8nbJjauIvBIBCexH0/edit?gid=249578957#gid=249578957
+
+
+```
 
 #### Заключение
 
